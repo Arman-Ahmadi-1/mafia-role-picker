@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تقسیم نقش مافیا</title>
+
+  <style>
+    body {
+      font-family: Tahoma, Arial, sans-serif;
+      padding: 20px;
+      max-width: 520px;
+      margin: auto;
+      background: radial-gradient(circle at top, #2b0f0f, #050505 70%);
+      color: white;
+      direction: rtl;
+    }
+
+    h1, h2, h3 {
+      text-align: center;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 13px;
+      margin: 7px 0;
+      width: 100%;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .citizen-btn {
+      background: linear-gradient(135deg, #1f6feb, #0b3d91);
+      color: white;
+    }
+
+    .mafia-btn {
+      background: linear-gradient(135deg, #8b0000, #3b0000);
+      color: white;
+    }
+
+    .main-btn {
+      background: linear-gradient(135deg, #d4af37, #9b7500);
+      color: #111;
+    }
+
+    .danger-btn {
+      background: linear-gradient(135deg, #c0392b, #641e16);
+      color: white;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 18px;
+      border-radius: 18px;
+      margin: 18px 0;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    #deck-list {
+      white-space: pre-line;
+      line-height: 1.8;
+      font-size: 18px;
+    }
+
+    .small-text {
+      text-align: center;
+      color: #ddd;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .role-card {
+      min-height: 300px;
+      border-radius: 24px;
+      padding: 25px;
+      margin: 25px 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 0 35px rgba(0,0,0,0.8);
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .role-card-mafia {
+      background:
+        radial-gradient(circle at top, rgba(255,0,0,0.25), transparent 45%),
+        linear-gradient(145deg, #3b0000, #090000);
+      border-color: #b30000;
+    }
+
+    .role-card-citizen {
+      background:
+        radial-gradient(circle at top, rgba(30,144,255,0.25), transparent 45%),
+        linear-gradient(145deg, #05254f, #050b14);
+      border-color: #1f6feb;
+    }
+
+    .role-icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+
+    .role-title {
+      font-size: 42px;
+      font-weight: bold;
+      margin: 12px 0;
+    }
+
+    .role-team {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+
+    .progress {
+      text-align: center;
+      font-size: 18px;
+      color: #f1c40f;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🎭 تقسیم نقش مافیا</h1>
+
+  <div id="setup-screen">
+    <div class="card">
+      <h2>ساختن دک</h2>
+      <p class="small-text">
+        نقش‌ها را اضافه کن. برای چندتا از یک نقش، همان دکمه را چند بار بزن.
+      </p>
+
+      <h3>تیم شهروند</h3>
+      <button class="citizen-btn" onclick="addRole('شهروند', 'citizen')">افزودن شهروند</button>
+      <button class="citizen-btn" onclick="addRole('دکتر', 'citizen')">افزودن دکتر</button>
+      <button class="citizen-btn" onclick="addRole('کارآگاه', 'citizen')">افزودن کارآگاه</button>
+      <button class="citizen-btn" onclick="addRole('اسنایپر', 'citizen')">افزودن اسنایپر</button>
+      <button class="citizen-btn" onclick="addRole('زره‌پوش', 'citizen')">افزودن زره‌پوش</button>
+      <button class="citizen-btn" onclick="addRole('شهردار', 'citizen')">افزودن شهردار</button>
+      <button class="citizen-btn" onclick="addRole('روانشناس', 'citizen')">افزودن روانشناس</button>
+
+      <h3>تیم مافیا</h3>
+      <button class="mafia-btn" onclick="addRole('مافیا', 'mafia')">افزودن مافیا</button>
+      <button class="mafia-btn" onclick="addRole('پدرخوانده', 'mafia')">افزودن پدرخوانده</button>
+      <button class="mafia-btn" onclick="addRole('معشوقه', 'mafia')">افزودن معشوقه</button>
+      <button class="mafia-btn" onclick="addRole('ناتو', 'mafia')">افزودن ناتو</button>
+      <button class="mafia-btn" onclick="addRole('مذاکره‌کننده', 'mafia')">افزودن مذاکره‌کننده</button>
+    </div>
+
+    <div class="card">
+      <h3>دک فعلی</h3>
+      <p id="deck-list">دک خالی است.</p>
+      <p id="deck-count">تعداد بازیکن‌ها: ۰</p>
+    </div>
+
+    <button class="main-btn" onclick="undoRole()">برگرداندن آخرین نقش</button>
+    <button class="danger-btn" onclick="clearDeck()">پاک کردن دک</button>
+    <button class="main-btn" onclick="startGame()">بر زدن و شروع بازی</button>
+  </div>
+
+  <div id="game-screen" style="display:none;">
+    <h2>گوشی را به بازیکن بعدی بده</h2>
+    <p class="progress" id="progress"></p>
+
+    <div class="card" id="hidden-message">
+      <p class="small-text">
+        بازیکن عزیز، وقتی آماده‌ای نقش خودت را ببینی، دکمه زیر را بزن.
+      </p>
+      <button class="main-btn" onclick="revealRole()">نمایش نقش من</button>
+    </div>
+
+    <div id="role-message" style="display:none;">
+      <div id="role-card" class="role-card">
+        <div class="role-icon" id="role-icon"></div>
+        <div class="role-title" id="role-display"></div>
+        <div class="role-team" id="role-team"></div>
+      </div>
+
+      <button class="main-btn" onclick="hideAndNext()">مخفی کن و نفر بعدی</button>
+    </div>
+
+    <button class="danger-btn" onclick="resetGame()">شروع دوباره</button>
+  </div>
+
+<script>
+  let deck = [];
+  let shuffledDeck = [];
+  let currentIndex = 0;
+
+  function toPersianNumber(num) {
+    return num.toString().replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[d]);
+  }
+
+  function addRole(role, team) {
+    deck.push({ role: role, team: team });
+    updateDeck();
+  }
+
+  function undoRole() {
+    deck.pop();
+    updateDeck();
+  }
+
+  function clearDeck() {
+    deck = [];
+    updateDeck();
+  }
+
+  function updateDeck() {
+    if (deck.length === 0) {
+      document.getElementById("deck-list").innerText = "دک خالی است.";
+      document.getElementById("deck-count").innerText = "تعداد بازیکن‌ها: ۰";
+      return;
+    }
+
+    const counts = {};
+
+    deck.forEach(item => {
+      counts[item.role] = (counts[item.role] || 0) + 1;
+    });
+
+    let text = "";
+    for (const role in counts) {
+      text += `${role}: ${toPersianNumber(counts[role])}\n`;
+    }
+
+    document.getElementById("deck-list").innerText = text;
+    document.getElementById("deck-count").innerText =
+      `تعداد بازیکن‌ها: ${toPersianNumber(deck.length)}`;
+  }
+
+  function startGame() {
+    if (deck.length === 0) {
+      alert("اول حداقل یک نقش اضافه کن.");
+      return;
+    }
+
+    shuffledDeck = [...deck];
+
+    for (let i = shuffledDeck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledDeck[i], shuffledDeck[j]] = [shuffledDeck[j], shuffledDeck[i]];
+    }
+
+    currentIndex = 0;
+
+    document.getElementById("setup-screen").style.display = "none";
+    document.getElementById("game-screen").style.display = "block";
+    document.getElementById("hidden-message").style.display = "block";
+    document.getElementById("role-message").style.display = "none";
+
+    updateProgress();
+  }
+
+  function revealRole() {
+    const currentRole = shuffledDeck[currentIndex];
+
+    const roleCard = document.getElementById("role-card");
+    const roleIcon = document.getElementById("role-icon");
+    const roleDisplay = document.getElementById("role-display");
+    const roleTeam = document.getElementById("role-team");
+
+    roleDisplay.innerText = currentRole.role;
+
+    if (currentRole.team === "mafia") {
+      roleCard.className = "role-card role-card-mafia";
+      roleIcon.innerText = "💀 🔫";
+      roleTeam.innerText = "تیم مافیا";
+    } else {
+      roleCard.className = "role-card role-card-citizen";
+      roleIcon.innerText = "🛡️ 🏠";
+      roleTeam.innerText = "تیم شهروند";
+    }
+
+    document.getElementById("hidden-message").style.display = "none";
+    document.getElementById("role-message").style.display = "block";
+  }
+
+  function hideAndNext() {
+    currentIndex++;
+
+    if (currentIndex >= shuffledDeck.length) {
+      alert("همه نقش‌ها تقسیم شدند.");
+      resetGame();
+      return;
+    }
+
+    document.getElementById("hidden-message").style.display = "block";
+    document.getElementById("role-message").style.display = "none";
+
+    updateProgress();
+  }
+
+  function updateProgress() {
+    document.getElementById("progress").innerText =
+      `بازیکن ${toPersianNumber(currentIndex + 1)} از ${toPersianNumber(shuffledDeck.length)}`;
+  }
+
+  function resetGame() {
+    deck = [];
+    shuffledDeck = [];
+    currentIndex = 0;
+
+    document.getElementById("setup-screen").style.display = "block";
+    document.getElementById("game-screen").style.display = "none";
+    document.getElementById("hidden-message").style.display = "block";
+    document.getElementById("role-message").style.display = "none";
+
+    updateDeck();
+  }
+</script>
+
+</body>
+</html>
