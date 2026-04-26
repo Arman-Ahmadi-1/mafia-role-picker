@@ -20,6 +20,11 @@
       text-align: center;
     }
 
+    h4 {
+      margin-bottom: 5px;
+      font-size: 20px;
+    }
+
     button {
       font-size: 18px;
       padding: 13px;
@@ -51,6 +56,18 @@
       color: white;
     }
 
+    .reveal-btn {
+      background: linear-gradient(135deg, #ffd700, #b8860b);
+      color: #111;
+      font-size: 30px;
+      font-weight: 900;
+      padding: 30px;
+      margin-top: 25px;
+      border-radius: 24px;
+      width: 100%;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.7);
+    }
+
     .card {
       background: rgba(255, 255, 255, 0.08);
       padding: 18px;
@@ -60,7 +77,8 @@
       border: 1px solid rgba(255,255,255,0.12);
     }
 
-    #deck-list {
+    #citizen-deck-list,
+    #mafia-deck-list {
       white-space: pre-line;
       line-height: 1.8;
       font-size: 18px;
@@ -71,6 +89,25 @@
       color: #ddd;
       font-size: 15px;
       line-height: 1.7;
+    }
+
+    .team-count {
+      font-size: 17px;
+      font-weight: bold;
+      opacity: 0.95;
+    }
+
+    .total-count {
+      font-weight: bold;
+      font-size: 22px;
+      text-align: center;
+      color: #ffd700;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      margin: 16px 0;
     }
 
     .role-card {
@@ -138,26 +175,38 @@
       </p>
 
       <h3>تیم شهروند</h3>
-      <button class="citizen-btn" onclick="addRole('شهروند', 'citizen')">افزودن شهروند</button>
-      <button class="citizen-btn" onclick="addRole('دکتر', 'citizen')">افزودن دکتر</button>
-      <button class="citizen-btn" onclick="addRole('کارآگاه', 'citizen')">افزودن کارآگاه</button>
-      <button class="citizen-btn" onclick="addRole('اسنایپر', 'citizen')">افزودن اسنایپر</button>
-      <button class="citizen-btn" onclick="addRole('زره‌پوش', 'citizen')">افزودن زره‌پوش</button>
-      <button class="citizen-btn" onclick="addRole('شهردار', 'citizen')">افزودن شهردار</button>
-      <button class="citizen-btn" onclick="addRole('روانشناس', 'citizen')">افزودن روانشناس</button>
+      <button class="citizen-btn" onclick="addRole('شهروند', 'citizen')">شهروند</button>
+      <button class="citizen-btn" onclick="addRole('دکتر', 'citizen')">دکتر</button>
+      <button class="citizen-btn" onclick="addRole('کارآگاه', 'citizen')">کارآگاه</button>
+      <button class="citizen-btn" onclick="addRole('اسنایپر', 'citizen')">اسنایپر</button>
+      <button class="citizen-btn" onclick="addRole('زره‌پوش', 'citizen')">زره‌پوش</button>
+      <button class="citizen-btn" onclick="addRole('شهردار', 'citizen')">شهردار</button>
+      <button class="citizen-btn" onclick="addRole('روانشناس', 'citizen')">روانشناس</button>
 
       <h3>تیم مافیا</h3>
-      <button class="mafia-btn" onclick="addRole('مافیا', 'mafia')">افزودن مافیا</button>
-      <button class="mafia-btn" onclick="addRole('پدرخوانده', 'mafia')">افزودن پدرخوانده</button>
-      <button class="mafia-btn" onclick="addRole('معشوقه', 'mafia')">افزودن معشوقه</button>
-      <button class="mafia-btn" onclick="addRole('ناتو', 'mafia')">افزودن ناتو</button>
-      <button class="mafia-btn" onclick="addRole('مذاکره‌کننده', 'mafia')">افزودن مذاکره‌کننده</button>
+      <button class="mafia-btn" onclick="addRole('مافیا', 'mafia')">مافیا</button>
+      <button class="mafia-btn" onclick="addRole('پدرخوانده', 'mafia')">پدرخوانده</button>
+      <button class="mafia-btn" onclick="addRole('معشوقه', 'mafia')">معشوقه</button>
+      <button class="mafia-btn" onclick="addRole('ناتو', 'mafia')">ناتو</button>
+      <button class="mafia-btn" onclick="addRole('مذاکره‌کننده', 'mafia')">مذاکره‌کننده</button>
     </div>
 
     <div class="card">
       <h3>دک فعلی</h3>
-      <p id="deck-list">دک خالی است.</p>
-      <p id="deck-count">تعداد بازیکن‌ها: ۰</p>
+
+      <h4 style="color:#4da3ff;">تیم شهروند</h4>
+      <p id="citizen-deck-list">نقشی اضافه نشده.</p>
+      <p id="citizen-count" class="team-count">تعداد شهروندها: ۰</p>
+
+      <hr class="divider">
+
+      <h4 style="color:#ff4d4d;">تیم مافیا</h4>
+      <p id="mafia-deck-list">نقشی اضافه نشده.</p>
+      <p id="mafia-count" class="team-count">تعداد مافیاها: ۰</p>
+
+      <hr class="divider">
+
+      <p id="deck-count" class="total-count">تعداد کل بازیکن‌ها: ۰</p>
     </div>
 
     <button class="main-btn" onclick="undoRole()">برگرداندن آخرین نقش</button>
@@ -171,9 +220,9 @@
 
     <div class="card" id="hidden-message">
       <p class="small-text">
-        بازیکن عزیز، وقتی آماده‌ای نقش خودت را ببینی، دکمه زیر را بزن.
+        بازیکن عزیز، وقتی آماده‌ای نقش خودت را ببینی، دکمه بزرگ زیر را بزن.
       </p>
-      <button class="main-btn" onclick="revealRole()">نمایش نقش من</button>
+      <button class="reveal-btn" onclick="revealRole()">نمایش نقش من</button>
     </div>
 
     <div id="role-message" style="display:none;">
@@ -214,26 +263,38 @@
   }
 
   function updateDeck() {
-    if (deck.length === 0) {
-      document.getElementById("deck-list").innerText = "دک خالی است.";
-      document.getElementById("deck-count").innerText = "تعداد بازیکن‌ها: ۰";
-      return;
+    const citizenRoles = deck.filter(item => item.team === "citizen");
+    const mafiaRoles = deck.filter(item => item.team === "mafia");
+
+    function makeRoleText(roles) {
+      if (roles.length === 0) {
+        return "نقشی اضافه نشده.";
+      }
+
+      const counts = {};
+      roles.forEach(item => {
+        counts[item.role] = (counts[item.role] || 0) + 1;
+      });
+
+      let text = "";
+      for (const role in counts) {
+        text += `${role}: ${toPersianNumber(counts[role])}\n`;
+      }
+
+      return text;
     }
 
-    const counts = {};
+    document.getElementById("citizen-deck-list").innerText = makeRoleText(citizenRoles);
+    document.getElementById("mafia-deck-list").innerText = makeRoleText(mafiaRoles);
 
-    deck.forEach(item => {
-      counts[item.role] = (counts[item.role] || 0) + 1;
-    });
+    document.getElementById("citizen-count").innerText =
+      `تعداد شهروندها: ${toPersianNumber(citizenRoles.length)}`;
 
-    let text = "";
-    for (const role in counts) {
-      text += `${role}: ${toPersianNumber(counts[role])}\n`;
-    }
+    document.getElementById("mafia-count").innerText =
+      `تعداد مافیاها: ${toPersianNumber(mafiaRoles.length)}`;
 
-    document.getElementById("deck-list").innerText = text;
     document.getElementById("deck-count").innerText =
-      `تعداد بازیکن‌ها: ${toPersianNumber(deck.length)}`;
+      `تعداد کل بازیکن‌ها: ${toPersianNumber(deck.length)}`;
   }
 
   function startGame() {
