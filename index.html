@@ -365,16 +365,22 @@
   }
 
   function resetGame() {
-    deck = [];
-    shuffledDeck = [];
-    currentIndex = 0;
+   const confirmReset = confirm("آیا مطمئنی می‌خواهی بازی را از اول شروع کنی؟");
 
-    document.getElementById("setup-screen").style.display = "block";
-    document.getElementById("game-screen").style.display = "none";
-    document.getElementById("hidden-message").style.display = "block";
-    document.getElementById("role-message").style.display = "none";
+   if (!confirmReset) {
+    return;
+   }
 
-    updateDeck();
+   deck = [];
+   shuffledDeck = [];
+   currentIndex = 0;
+
+   document.getElementById("setup-screen").style.display = "block";
+   document.getElementById("game-screen").style.display = "none";
+   document.getElementById("hidden-message").style.display = "block";
+   document.getElementById("role-message").style.display = "none";
+
+   updateDeck();
   }
 </script>
 
